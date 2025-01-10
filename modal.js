@@ -23,8 +23,6 @@ const quantityTournament = document.getElementById("quantity");
 const city = document.getElementsByName("location");
 const generalConditions = document.getElementById("checkbox1");
 
-console.log(city);
-
 // launch modal event
 modalBtn.forEach((btn) => btn.addEventListener("click", launchModal));
 
@@ -62,8 +60,14 @@ function validateEmail(email) {
 }
 
 function validateBirthDate(birthdate) {
-    if (birthdate === "") {
-      throw new Error("Veuillez saisir une date de naissance.");
+    const today = new Date();
+    const maxAgeDate = new Date();
+    maxAgeDate.setFullYear(today.getFullYear() - 100);
+    const minAgeDate = new Date();
+    minAgeDate.setFullYear(today.getFullYear() - 13);
+
+    if (birthdate === "" || new Date(birthdate) >= minAgeDate || new Date(birthdate) <= maxAgeDate) {
+      throw new Error("Veuillez saisir une date de naissance. (Vous devez avoir 13 ans révolus.)");
     }
 }
 
@@ -81,6 +85,7 @@ function validateCity(city) {
             locationSelected = true;
         }
     }
+
     if (!locationSelected) {
       throw new Error("Veuillez choisir une ville.");
     }
@@ -88,7 +93,7 @@ function validateCity(city) {
 
 function validateGeneralConditions(generalConditions) {
     if (!generalConditions.checked) {
-      throw new Error("Vous devez cocher les conditions générales.");
+      throw new Error("Veuillez cocher les conditions générales.");
     }
 }
 
@@ -102,7 +107,7 @@ form.addEventListener("submit", (event) => {
       validateEmail(email.value);
       validateBirthDate(birthDate.value);
       validateQuantityTournament(quantityTournament.value);
-      validateCity(city[0].value);
+      validateCity(city);
       validateGeneralConditions(generalConditions);
 
       console.log('Formulaire soumis avec succès !')
