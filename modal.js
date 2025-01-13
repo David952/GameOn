@@ -11,7 +11,7 @@ function editNav() {
 const modalbg = document.querySelector(".bground");
 const modalBtn = document.querySelectorAll(".modal-btn");
 const formData = document.querySelectorAll(".formData");
-const btnClose = document.querySelector(".close");
+const closeElement = document.querySelectorAll(".close, .confirmationBtn");
 
 // DOM Form
 const form = document.querySelector("form");
@@ -27,7 +27,7 @@ const generalConditions = document.getElementById("checkbox1");
 modalBtn.forEach((btn) => btn.addEventListener("click", launchModal));
 
 // close modal event
-btnClose.addEventListener("click", closeModal);
+closeElement.forEach((btnElement) => btnElement.addEventListener("click", closeModal));
 
 // launch modal form
 function launchModal() {

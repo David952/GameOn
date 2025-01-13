@@ -48,7 +48,7 @@ img {
   margin: 5px;
   text-decoration: none;
   font-size: 20px;
-  font-family: Roboto, sans-serif;
+  font-family: "DM Sans", sans-serif;
 }
 
 .topnav a:hover {
@@ -187,6 +187,20 @@ main {
   margin: 15px auto;
 }
 
+.modal-confirmation {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  height: 75vh;
+  display: none;
+}
+
+.confirmationBtn {
+  position: absolute;
+  bottom: 20px;
+}
+
 label {
   font-family: var(--font-default);
   font-size: 17px;
@@ -194,11 +208,13 @@ label {
   display: inline-block;
   margin-bottom: 11px;
 }
+
 input {
   padding: 8px;
   border: 0.8px solid #ccc;
   outline: none;
 }
+
 .text-control {
   margin: 0;
   padding: 8px;
@@ -207,6 +223,7 @@ input {
   font-size: 20px;
   height: 48px;
 }
+
 .formData[data-error]::after {
   content: attr(data-error);
   font-size: 0.4em;
@@ -335,7 +352,7 @@ input[data-error]::after {
 /* custom select styles */
 .custom-select {
   position: relative;
-  font-family: Arial;
+  font-family: "DM Sans", "Arial", sans-serif;
   font-size: 1.1rem;
   font-weight: normal;
 }
