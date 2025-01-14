@@ -4,12 +4,8 @@
     <meta charset="utf-8" />
     <title>Reservation</title>
     <meta name="viewport" content="width=device-width,initial-scale=1" />
-    <link rel="stylesheet" href="modal.css" />
+    <link rel="stylesheet" href="css/style.css" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-    <link
-      href="https://fonts.googleapis.com/css?family=DM+Sans"
-      rel="stylesheet"
-    />
   </head>
   <body>
     <div class="topnav" id="myTopnav">
@@ -71,7 +67,8 @@
                   id="first"
                   name="first"
                   minlength="2"
-                /><br>
+                />
+                <p></p>
               </div>
               <div
                 class="formData">
@@ -81,7 +78,8 @@
                   type="text"
                   id="last"
                   name="last"
-                /><br>
+                />
+                <p></p>
               </div>
               <div
                 class="formData">
@@ -91,7 +89,8 @@
                   type="email"
                   id="email"
                   name="email"
-                /><br>
+                />
+                <p></p>
               </div>
               <div
                 class="formData">
@@ -101,12 +100,14 @@
                   type="date"
                   id="birthdate"
                   name="birthdate"
-                /><br>
+                />
+                <p></p>
               </div>
               <div
                 class="formData">
                 <label>À combien de tournois GameOn avez-vous déjà participé ?</label><br>
                 <input type="number" class="text-control" id="quantity" name="quantity" min="0" max="99">
+                <p></p>
               </div>
               <p class="text-label">A quel tournoi souhaitez-vous participer cette année ?</p>
               <div
@@ -177,6 +178,7 @@
                   <span class="checkbox-icon"></span>
                   Portland</label
                 >
+                <p></p>
               </div>
 
               <div
@@ -191,7 +193,7 @@
                   <span class="checkbox-icon"></span>
                   J'ai lu et accepté les conditions d'utilisation.
                 </label>
-                <br>
+                <p></p>
                 <input class="checkbox-input" type="checkbox" id="checkbox2" />
                 <label class="checkbox2-label" for="checkbox2">
                   <span class="checkbox-icon"></span>
@@ -211,7 +213,7 @@
             <div id="confirmationMessage" class="confirmation-message">
               <p>Merci pour votre inscription.</p>
             </div>
-            <button type="button" class="btn-submit confirmationBtn">Fermer</button>
+            <button type="button" class="btn-submit confirmation-btn">Fermer</button>
           </div>
         </div>
       </div>
@@ -221,6 +223,6 @@
         Copyright 2014 - 2022, GameOn Inc.
       </p>
     </footer>
-    <script src="modal.js"></script>
+    <script src="js/app.js"></script>
   </body>
 </html>
