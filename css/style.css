@@ -12,13 +12,13 @@
 
 @font-face {
   font-family: "DM Sans";
-  src: url("font/DMSans-Regular.ttf") format("truetype");
+  src: url("/font/DMSans-Regular.ttf") format("truetype");
   font-weight: normal;
   font-style: normal;
 }
 @font-face {
   font-family: "DM Sans";
-  src: url("font/DMSans-Bold.ttf") format("truetype");
+  src: url("/font/DMSans-Bold.ttf") format("truetype");
   font-weight: bold;
   font-style: normal;
 }
