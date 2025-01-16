@@ -21,13 +21,15 @@ const emailInput = document.getElementById("email");
 const birthDate = document.getElementById("birthdate");
 const quantityTournamentInput = document.getElementById("quantity");
 const city = document.getElementsByName("location");
-const generalConditions = document.getElementById("checkbox1");
+const useConditions = document.getElementById("checkbox1");
 
 // Launch modal event
 modalBtn.forEach((btn) => btn.addEventListener("click", launchModal));
 
 // Close modal event
-closeElement.forEach((btnElement) => btnElement.addEventListener("click", closeModal));
+closeElement.forEach((btnElement) =>
+  btnElement.addEventListener("click", closeModal)
+);
 
 // Launch modal form
 function launchModal() {
@@ -41,8 +43,8 @@ function closeModal() {
 
 // Show error message
 function showError(inputElement, message) {
-  const errorElement = inputElement.nextElementSibling;
-  console.log(errorElement)
+  const errorElement = inputElement.closest(".formData").querySelector("p");
+
   if (errorElement) {
     errorElement.classList.add("error-message");
     errorElement.textContent = message;
@@ -52,7 +54,8 @@ function showError(inputElement, message) {
 
 // Clear error message
 function clearError(inputElement) {
-  const errorElement = inputElement.nextElementSibling;
+  const errorElement = inputElement.closest(".formData").querySelector("p");
+
   if (errorElement) {
     errorElement.classList.remove("error-message");
     errorElement.textContent = "";
@@ -60,33 +63,66 @@ function clearError(inputElement) {
   inputElement.classList.remove("error-input");
 }
 
+// Error radio button
+function radioBtnError(city, hasError) {
+
+  const radioBtn = document.querySelectorAll('.formData .checkbox-label .checkbox-icon');
+
+    if (radioBtn) {
+      if (hasError) {
+        radioBtn.forEach(radio => {
+          radio.classList.add('error-border');
+        });
+      } else {
+        radioBtn.forEach(radio => {
+          radio.classList.remove('error-border');
+        });
+      }
+    }
+}
+
+// Error checkbox
+function checkboxError(inputElement, hasError) {
+
+  const checkboxIcon = inputElement.closest(".formData").querySelector(".checkbox-icon");
+
+  if (checkboxIcon) {
+    if (hasError) {
+      checkboxIcon.classList.add("error-border");
+    } else {
+      checkboxIcon.classList.remove("error-border");
+    }
+  }
+}
+
 // inputs form validation
 function validateFirstName(firstName) {
   clearError(firstNameInput);
   if (firstName.trim().length < 2) {
     showError(firstNameInput, "Le prénom doit contenir au moins 2 caractères.");
-    return false
+    return false;
   }
-  return true
+  return true;
 }
 
 function validateLastName(lastName) {
   clearError(lastNameInput);
   if (lastName.trim().length < 2) {
-    showError(lastNameInput, "Le nom de famille doit contenir au moins 2 caractères.");
-    return false
+    showError(lastNameInput, "Le nom de famille doit contenir au moins 2 caractères."
+    );
+    return false;
   }
-  return true
+  return true;
 }
 
 function validateEmail(email) {
   clearError(emailInput);
-  const emailRegExp = new RegExp("[a-z0-9._-]+@[a-z0-9._-]+\\.[a-z0-9._-]+")
+  const emailRegExp = new RegExp("[a-z0-9._-]+@[a-z0-9._-]+\\.[a-z0-9._-]+");
   if (!emailRegExp.test(email)) {
     showError(emailInput, "Veuillez saisir une adresse e-mail valide.");
-    return false
+    return false;
   }
-  return true
+  return true;
 }
 
 function validateBirthDate(birthDate) {
@@ -98,27 +134,23 @@ function validateBirthDate(birthDate) {
   const minAgeDate = new Date();
   minAgeDate.setFullYear(today.getFullYear() - 13);
 
-  const birthdateValue = new Date(birthDate.value)
+  const birthdateValue = new Date(birthDate.value);
 
-  if (
-    birthDate.value === "" ||
-    new Date(birthdateValue) >= minAgeDate ||
-    new Date(birthdateValue) <= maxAgeDate
-  ) {
+  if (birthDate.value === "" || new Date(birthdateValue) >= minAgeDate || new Date(birthdateValue) <= maxAgeDate) {
     showError(birthDate, "Veuillez saisir une date de naissance valide. (Vous devez avoir 13 ans révolus.)");
-    return false
+    return false;
   }
-  return true
+  return true;
 }
 
 function validateQuantityTournament(quantityTournament) {
   clearError(quantityTournamentInput);
 
   if (Number.isNaN(quantityTournament) || quantityTournament === "") {
-    showError(quantityTournamentInput, "Veuillez saisir une valeur numérique pour le nombre de tournois.")
-    return false
+    showError(quantityTournamentInput, "Veuillez saisir une valeur numérique pour le nombre de tournois.");
+    return false;
   }
-  return true
+  return true;
 }
 
 function validateCity(city) {
@@ -127,22 +159,29 @@ function validateCity(city) {
   for (let i = 0; i < city.length; i++) {
     if (city[i].checked) {
       locationSelected = true;
+      clearError(city[i]);
+      radioBtnError(city, false);
     }
   }
 
   if (!locationSelected) {
-    throw new Error("Veuillez choisir une ville.");
+    for (let i = 0; i < city.length; i++) {
+      showError(city[i], "Veuillez choisir une ville.");
+    }
+    radioBtnError(city, true);
   }
+  return locationSelected;
 }
 
-function validateGeneralConditions(generalConditions) {
-  clearError(generalConditions);
+function validateUseConditions(useConditions) {
+  clearError(useConditions);
+  checkboxError(useConditions, !useConditions.checked);
 
-  if (!generalConditions.checked) {
-    showError(generalConditions, "Veuillez cocher les conditions générales.");
-    return false
+  if (!useConditions.checked) {
+    showError(useConditions, "Veuillez cocher les conditions d'utilisation.");
+    return false;
   }
-  return true
+  return true;
 }
 
 // Form submit
@@ -157,7 +196,7 @@ form.addEventListener("submit", (event) => {
   if (!validateBirthDate(birthDate)) isFormValid = false;
   if (!validateQuantityTournament(quantityTournamentInput.value)) isFormValid = false;
   if (!validateCity(city)) isFormValid = false;
-  if (!validateGeneralConditions(generalConditions)) isFormValid = false;
+  if (!validateUseConditions(useConditions)) isFormValid = false;
 
   if (isFormValid) {
     console.log("Formulaire soumis avec succès !");
