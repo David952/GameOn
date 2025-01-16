@@ -263,6 +263,10 @@ input {
   outline: 2px solid red;
 }
 
+.error-border {
+  border: 2px solid red !important;
+}
+
 .error-message {
   color: red;
   font-size: 14px;
