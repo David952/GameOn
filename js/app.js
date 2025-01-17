@@ -9,9 +9,12 @@ function editNav() {
 
 // DOM Elements
 const modalbg = document.querySelector(".bground");
+const modalContent = document.querySelector(".content");
 const modalBtn = document.querySelectorAll(".modal-btn");
+const modalBody = document.querySelector(".modal-body");
+const modalConfirmation = document.querySelector(".modal-confirmation");
 const formData = document.querySelectorAll(".formData");
-const closeElement = document.querySelectorAll(".close, .confirmation-btn");
+const closeElement = document.querySelectorAll(".close");
 
 // DOM Form
 const form = document.querySelector("form");
@@ -27,13 +30,12 @@ const useConditions = document.getElementById("checkbox1");
 modalBtn.forEach((btn) => btn.addEventListener("click", launchModal));
 
 // Close modal event
-closeElement.forEach((btnElement) =>
-  btnElement.addEventListener("click", closeModal)
-);
+closeElement.forEach((btnElement) => btnElement.addEventListener("click", closeModal));
 
 // Launch modal form
 function launchModal() {
   modalbg.style.display = "block";
+  modalContent.style.animationName = "modalopen";
 }
 
 // Close modal form
@@ -64,8 +66,7 @@ function clearError(inputElement) {
 }
 
 // Error radio button
-function radioBtnError(city, hasError) {
-
+function radioBtnError(hasError) {
   const radioBtn = document.querySelectorAll('.formData .checkbox-label .checkbox-icon');
 
     if (radioBtn) {
@@ -83,7 +84,6 @@ function radioBtnError(city, hasError) {
 
 // Error checkbox
 function checkboxError(inputElement, hasError) {
-
   const checkboxIcon = inputElement.closest(".formData").querySelector(".checkbox-icon");
 
   if (checkboxIcon) {
@@ -98,6 +98,7 @@ function checkboxError(inputElement, hasError) {
 // inputs form validation
 function validateFirstName(firstName) {
   clearError(firstNameInput);
+
   if (firstName.trim().length < 2) {
     showError(firstNameInput, "Le prénom doit contenir au moins 2 caractères.");
     return false;
@@ -107,6 +108,7 @@ function validateFirstName(firstName) {
 
 function validateLastName(lastName) {
   clearError(lastNameInput);
+
   if (lastName.trim().length < 2) {
     showError(lastNameInput, "Le nom de famille doit contenir au moins 2 caractères."
     );
@@ -117,6 +119,7 @@ function validateLastName(lastName) {
 
 function validateEmail(email) {
   clearError(emailInput);
+
   const emailRegExp = new RegExp("[a-z0-9._-]+@[a-z0-9._-]+\\.[a-z0-9._-]+");
   if (!emailRegExp.test(email)) {
     showError(emailInput, "Veuillez saisir une adresse e-mail valide.");
@@ -160,7 +163,7 @@ function validateCity(city) {
     if (city[i].checked) {
       locationSelected = true;
       clearError(city[i]);
-      radioBtnError(city, false);
+      radioBtnError(false);
     }
   }
 
@@ -168,7 +171,7 @@ function validateCity(city) {
     for (let i = 0; i < city.length; i++) {
       showError(city[i], "Veuillez choisir une ville.");
     }
-    radioBtnError(city, true);
+    radioBtnError(true);
   }
   return locationSelected;
 }
@@ -184,10 +187,8 @@ function validateUseConditions(useConditions) {
   return true;
 }
 
-// Form submit
-form.addEventListener("submit", (event) => {
-  event.preventDefault();
-
+// Form validation
+function validation() {
   let isFormValid = true;
 
   if (!validateFirstName(firstNameInput.value)) isFormValid = false;
@@ -198,9 +199,39 @@ form.addEventListener("submit", (event) => {
   if (!validateCity(city)) isFormValid = false;
   if (!validateUseConditions(useConditions)) isFormValid = false;
 
-  if (isFormValid) {
-    console.log("Formulaire soumis avec succès !");
+  return isFormValid;
+}
+
+// Form submit
+form.addEventListener("submit", (event) => {
+  event.preventDefault();
+
+  if (validation()) {
+    confirmationMessage();
+    formReset();
   } else {
     console.log("Formulaire non valide.");
   }
 });
+
+// Show confirmation message
+function confirmationMessage() {
+  modalBody.style.display = "none";
+  modalConfirmation.style.display = "flex";
+  document.querySelector(".close").classList.add("close-confirmation");
+}
+
+// Form reset
+function formReset() {
+  const closeConfirmationElements = document.querySelectorAll(".close-confirmation, .confirmation-btn");
+  closeConfirmationElements.forEach(element => {
+    element.addEventListener("click", () => {
+      form.reset();
+      modalContent.style.animationName = "modalclose";
+      modalBody.style.display = "block";
+      modalConfirmation.style.display = "none";
+      document.querySelector(".close").classList.remove("close-confirmation");
+      closeModal();
+    });
+  });
+}
