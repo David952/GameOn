@@ -34,13 +34,22 @@ closeElement.forEach((btnElement) => btnElement.addEventListener("click", closeM
 
 // Launch modal form
 function launchModal() {
+  setTimeout(() => {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+    document.body.style.overflow = "hidden";
+  }, 600);
   modalbg.style.display = "block";
   modalContent.style.animationName = "modalopen";
 }
 
 // Close modal form
 function closeModal() {
-  modalbg.style.display = "none";
+  document.body.style.overflow = "auto";
+  modalContent.style.animationName = "modalclose";
+  setTimeout(() => {
+    modalbg.style.display = "none";
+  }, 400)
+  
 }
 
 // Show error message
@@ -164,6 +173,7 @@ function validateCity(city) {
       locationSelected = true;
       clearError(city[i]);
       radioBtnError(false);
+      return city[i].value;
     }
   }
 
@@ -207,6 +217,15 @@ form.addEventListener("submit", (event) => {
   event.preventDefault();
 
   if (validation()) {
+    console.log("%cDonnées du formulaire", "font-weight: bold; text-decoration: underline");
+    console.log("Prénom :", firstNameInput.value);
+    console.log("Nom :", lastNameInput.value);
+    console.log("E-mail :", emailInput.value);
+    console.log("Date de naissance :", birthDate.value.split('-').reverse().join('/'));
+    console.log("Nombre de tournois :", quantityTournamentInput.value);
+    console.log("Ville :", validateCity(city));
+    console.log("Conditions d'utilisation :", useConditions.checked);
+
     confirmationMessage();
     formReset();
   } else {
@@ -226,12 +245,16 @@ function formReset() {
   const closeConfirmationElements = document.querySelectorAll(".close-confirmation, .confirmation-btn");
   closeConfirmationElements.forEach(element => {
     element.addEventListener("click", () => {
-      form.reset();
-      modalContent.style.animationName = "modalclose";
-      modalBody.style.display = "block";
-      modalConfirmation.style.display = "none";
+      form.reset();      
+      setTimeout(() => {
+        modalConfirmation.style.display = "none";
+        modalBody.style.display = "block";
+      }, 500);
       document.querySelector(".close").classList.remove("close-confirmation");
       closeModal();
+      setTimeout(() => {
+        console.clear();
+      }, 550);
     });
   });
 }
