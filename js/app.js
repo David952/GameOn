@@ -1,3 +1,7 @@
+/**
+ * Fonction pour éditer la navigation responsive.
+ * Ajoute ou retire la classe "responsive" à l'élément de navigation.
+ */
 function editNav() {
   const x = document.getElementById("myTopnav");
   if (x.className === "topnav") {
@@ -7,7 +11,7 @@ function editNav() {
   }
 }
 
-// DOM Elements
+// Sélection des éléments du DOM
 const modalbg = document.querySelector(".bground");
 const modalContent = document.querySelector(".content");
 const modalBtn = document.querySelectorAll(".modal-btn");
@@ -16,7 +20,7 @@ const modalConfirmation = document.querySelector(".modal-confirmation");
 const formData = document.querySelectorAll(".formData");
 const closeElement = document.querySelectorAll(".close");
 
-// DOM Form
+// Sélection des éléments du formulaire
 const form = document.querySelector("form");
 const firstNameInput = document.getElementById("first");
 const lastNameInput = document.getElementById("last");
@@ -26,13 +30,16 @@ const quantityTournamentInput = document.getElementById("quantity");
 const city = document.getElementsByName("location");
 const useConditions = document.getElementById("checkbox1");
 
-// Launch modal event
+// Écouteur d'événement pour l'affichage de la modal
 modalBtn.forEach((btn) => btn.addEventListener("click", launchModal));
 
-// Close modal event
+// Écouteur d'événement pour la fermeture de la modal
 closeElement.forEach((btnElement) => btnElement.addEventListener("click", closeModal));
 
-// Launch modal form
+/**
+ * Afficher la modal.
+ * Montre la modal avec une animation et désactive le défilement de la page.
+ */
 function launchModal() {
   setTimeout(() => {
     window.scrollTo({ top: 0, behavior: 'smooth' });
@@ -42,17 +49,23 @@ function launchModal() {
   modalContent.style.animationName = "modalopen";
 }
 
-// Close modal form
+/**
+ * Fermer la modal.
+ * Cache la modal avec une animation et réactive le défilement de la page.
+ */
 function closeModal() {
   document.body.style.overflow = "auto";
   modalContent.style.animationName = "modalclose";
   setTimeout(() => {
     modalbg.style.display = "none";
   }, 400)
-  
 }
 
-// Show error message
+/**
+ * Afficher un message d'erreur.
+ * @param {HTMLElement} inputElement - L'élément input associé à l'erreur.
+ * @param {string} message - Le message d'erreur à afficher.
+ */
 function showError(inputElement, message) {
   const errorElement = inputElement.closest(".formData").querySelector("p");
 
@@ -63,7 +76,10 @@ function showError(inputElement, message) {
   inputElement.classList.add("error-input");
 }
 
-// Clear error message
+/**
+ * Effacer un message d'erreur.
+ * @param {HTMLElement} inputElement - L'élément input associé à l'erreur.
+ */
 function clearError(inputElement) {
   const errorElement = inputElement.closest(".formData").querySelector("p");
 
@@ -74,7 +90,10 @@ function clearError(inputElement) {
   inputElement.classList.remove("error-input");
 }
 
-// Error radio button
+/**
+ * Gérer les erreurs des boutons radio.
+ * @param {boolean} hasError - Indique si une erreur doit être affichée.
+ */
 function radioBtnError(hasError) {
   const radioBtn = document.querySelectorAll('.formData .checkbox-label .checkbox-icon');
 
@@ -91,7 +110,11 @@ function radioBtnError(hasError) {
     }
 }
 
-// Error checkbox
+/**
+ * Gestion des erreurs des cases à cocher.
+ * @param {HTMLElement} inputElement - L'élément input associé à l'erreur.
+ * @param {boolean} hasError - Indique si une erreur doit être affichée.
+ */
 function checkboxError(inputElement, hasError) {
   const checkboxIcon = inputElement.closest(".formData").querySelector(".checkbox-icon");
 
@@ -104,7 +127,11 @@ function checkboxError(inputElement, hasError) {
   }
 }
 
-// inputs form validation
+/**
+ * Valider le prénom.
+ * @param {string} firstName - Le prénom à valider.
+ * @returns {boolean} - Retourne true si le prénom est valide sinon false.
+ */
 function validateFirstName(firstName) {
   clearError(firstNameInput);
 
@@ -112,31 +139,48 @@ function validateFirstName(firstName) {
     showError(firstNameInput, "Le prénom doit contenir au moins 2 caractères.");
     return false;
   }
+  
   return true;
 }
 
+/**
+ * Valider le nom de famille.
+ * @param {string} lastName - Le nom de famille à valider.
+ * @returns {boolean} - Retourne true si le nom de famille est valide sinon false.
+ */
 function validateLastName(lastName) {
   clearError(lastNameInput);
 
   if (lastName.trim().length < 2) {
-    showError(lastNameInput, "Le nom de famille doit contenir au moins 2 caractères."
-    );
+    showError(lastNameInput, "Le nom de famille doit contenir au moins 2 caractères.");
     return false;
   }
+
   return true;
 }
 
+/**
+ * Valider l'adresse e-mail.
+ * @param {string} email - L'adresse e-mail à valider.
+ * @returns {boolean} - Retourne true si l'adresse e-mail est valide sinon false.
+ */
 function validateEmail(email) {
   clearError(emailInput);
 
-  const emailRegExp = new RegExp("[a-z0-9._-]+@[a-z0-9._-]+\\.[a-z0-9._-]+");
+  const emailRegExp = new RegExp("^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,6}$");
   if (!emailRegExp.test(email)) {
     showError(emailInput, "Veuillez saisir une adresse e-mail valide.");
     return false;
   }
+
   return true;
 }
 
+/**
+ * Valider la date de naissance.
+ * @param {HTMLElement} birthDate - L'élément input de la date de naissance.
+ * @returns {boolean} - Retourne true si la date de naissance est valide sinon false.
+ */
 function validateBirthDate(birthDate) {
   clearError(birthDate);
 
@@ -148,13 +192,19 @@ function validateBirthDate(birthDate) {
 
   const birthdateValue = new Date(birthDate.value);
 
-  if (birthDate.value === "" || new Date(birthdateValue) >= minAgeDate || new Date(birthdateValue) <= maxAgeDate) {
+  if (birthDate.value === "" || birthdateValue >= minAgeDate || birthdateValue <= maxAgeDate) {
     showError(birthDate, "Veuillez saisir une date de naissance valide. (Vous devez avoir 13 ans révolus.)");
     return false;
   }
+  
   return true;
 }
 
+/**
+ * Valider le nombre de tournois.
+ * @param {string} quantityTournament - Le nombre de tournois à valider.
+ * @returns {boolean} - Retourne true si le nombre de tournois est valide sinon false.
+ */
 function validateQuantityTournament(quantityTournament) {
   clearError(quantityTournamentInput);
 
@@ -162,9 +212,15 @@ function validateQuantityTournament(quantityTournament) {
     showError(quantityTournamentInput, "Veuillez saisir une valeur numérique pour le nombre de tournois.");
     return false;
   }
+
   return true;
 }
 
+/**
+ * Valider la sélection de la ville.
+ * @param {NodeList} city - Les boutons radio de sélection de la ville.
+ * @returns {boolean} - Retourne true si une ville est sélectionnée sinon false.
+ */
 function validateCity(city) {
   let locationSelected = false;
 
@@ -183,9 +239,15 @@ function validateCity(city) {
     }
     radioBtnError(true);
   }
+
   return locationSelected;
 }
 
+/**
+ * Valider l'acceptation des conditions d'utilisation.
+ * @param {HTMLElement} useConditions - L'élément checkbox des conditions d'utilisation.
+ * @returns {boolean} - Retourne true si les conditions sont acceptées sinon false.
+ */
 function validateUseConditions(useConditions) {
   clearError(useConditions);
   checkboxError(useConditions, !useConditions.checked);
@@ -194,10 +256,14 @@ function validateUseConditions(useConditions) {
     showError(useConditions, "Veuillez cocher les conditions d'utilisation.");
     return false;
   }
+
   return true;
 }
 
-// Form validation
+/**
+ * Validation de l'ensemble du formulaire.
+ * @returns {boolean} - Retourne true si le formulaire est valide sinon false.
+ */
 function validation() {
   let isFormValid = true;
 
@@ -212,7 +278,7 @@ function validation() {
   return isFormValid;
 }
 
-// Form submit
+// Ajout de l'écouteur d'événement pour la soumission du formulaire
 form.addEventListener("submit", (event) => {
   event.preventDefault();
 
@@ -233,14 +299,18 @@ form.addEventListener("submit", (event) => {
   }
 });
 
-// Show confirmation message
+/**
+ * Afficher le message de confirmation.
+ */
 function confirmationMessage() {
   modalBody.style.display = "none";
   modalConfirmation.style.display = "flex";
   document.querySelector(".close").classList.add("close-confirmation");
 }
 
-// Form reset
+/**
+ * Réinitialiser le formulaire.
+ */
 function formReset() {
   const closeConfirmationElements = document.querySelectorAll(".close-confirmation, .confirmation-btn");
   closeConfirmationElements.forEach(element => {
