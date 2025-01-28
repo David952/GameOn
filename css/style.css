@@ -172,7 +172,7 @@ button:hover {
   justify-content: center;
   align-items: center;
   flex-direction: column;
-  height: 75vh;
+  height: 65vh;
   display: none;
 }
 
@@ -513,7 +513,7 @@ input {
     padding: 47px 8%;
   }
   .modal-confirmation {
-    height: 91vh;
+    height: 86vh;
   }
   label {
     font-size: 14px;
